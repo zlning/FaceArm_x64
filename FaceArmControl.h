@@ -1,15 +1,19 @@
+#pragma once
+#include "FaceArmInput.h"
+#include "FaceArmTracking.h"
+#include "FaceArmType.h"
+class FaceArmInput;
+class FaceArmTracking;
 class FaceArmControl {
-
-};
-struct FaceArmControlRectangle {
-	int left;
-	int top;
-	int right;
-	int bottom;
-	bool isShow;
-};
-struct FaceArmControlSurfaceBuffer {
-	int width;
-	int height;
-	bool isShow;
+public:
+	FaceArmControl();
+	~FaceArmControl();
+	int getPreviewData(FaceArmControlSurfaceBuffer **surface);
+	int showSource();
+	int TrackingFace();
+	void setRectangle(FaceArmControlRectangle rectangle);
+private:
+	FaceArmInput *mInput;
+	FaceArmTracking *mTraking;
+	FaceArmControlSurfaceBuffer *mSurface;
 };

@@ -1,3 +1,4 @@
+#if 1
 #include "FaceArmInput.h"
 using namespace std;
 
@@ -15,26 +16,28 @@ FaceArmInput::FaceArmInput() {
 		mCap = NULL;
 		return;
 	}
-	//thread td(&FaceArmInput::InputThread,this);
-	//td.join();
 	mInputThread = new thread(&FaceArmInput::InputThread, this);
 }
-void FaceArmInput::getBufferSize(int *size) {
+FaceArmInput::~FaceArmInput() {
+}
+int FaceArmInput::getBufferSize() {
 	if (mCap == NULL) {
 		fprintf(stderr, "mCap is not init\n");
-		return;
+		return -1;
 	}
 	//*mCap >> frame;
-	*size = frame.total();
+	return frame.total();
 }
-void FaceArmInput::getBuffer(unsigned char *buffer) {
+void FaceArmInput::getBuffer(FaceArmControlSurfaceBuffer *surface) {
 	if (mCap==NULL) {
 		fprintf(stderr, "mCap is not init\n");
 		return;
 	}
 	//*mCap >> frame;
-	//frame.data
-	memcpy(buffer, frame.data, frame.total());
+	surface->width = frame.rows;
+	surface->height = frame.cols;
+	surface->buffersize = frame.total();
+	memcpy(surface->buffer, frame.data, frame.total());
 }
 void FaceArmInput::showCameraVedio() {
 	/*using namespace cv;
@@ -69,3 +72,4 @@ void  FaceArmInput::InputThread() {
 		}
 	}
 }
+#endif

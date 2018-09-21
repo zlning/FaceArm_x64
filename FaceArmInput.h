@@ -1,18 +1,19 @@
+#pragma once
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/types_c.h>
 #include <thread>
 #include <windows.h>
-#include "FaceArmControl.h"
-
+#include "FaceArmType.h"
 class FaceArmInput
 {
 public:
 	FaceArmInput();
-	void getBuffer(unsigned char *buffer);
+	~FaceArmInput();
+	void getBuffer(FaceArmControlSurfaceBuffer *surface);
 	void showCameraVedio();
-	void getBufferSize(int *size);
+	int getBufferSize();
 	void setRectangle(FaceArmControlRectangle rectangle);
 	std::thread *mInputThread;
 private:
