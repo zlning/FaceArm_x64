@@ -1,5 +1,6 @@
 #if 1
 #include"FaceArmTracking.h"
+#include <windows.h>
 #pragma comment(lib,"libarcsoft_fsdk_face_tracking.lib")
 
 #define WORKBUF_SIZE        (40*1024*1024)
@@ -65,7 +66,10 @@ void FaceArmTracking::TrackingThread() {
 			offInput.i32Width = surface->width;
 			offInput.i32Height = surface->height;
 			offInput.pi32Pitch[0] = offInput.i32Width * 3;
-			memcpy(offInput.ppu8Plane[0], surface->buffer, surface->buffersize);
+
+			fprintf(stdout, "before memcopy size=%d\n", surface->buffersize);
+			offInput.ppu8Plane[0]= surface->buffer;
+			fprintf(stdout, "after memcopy\n");
 			//=======================//
 			LPAFT_FSDK_FACERES	FaceRes = nullptr;
 
@@ -78,6 +82,10 @@ void FaceArmTracking::TrackingThread() {
 			else
 			{
 				fprintf(stdout, "The number of face: %d\n", FaceRes->nFace);
+				if (FaceRes->nFace == 0) {
+					FaceArmControlRectangle tmp = { 0,0,0, 0,true };
+					mFaceArmControl->setRectangle(tmp);
+				}
 				for (int i = 0; i < FaceRes->nFace; i++)
 				{
 					if (i == 0) {
@@ -92,6 +100,10 @@ void FaceArmTracking::TrackingThread() {
 					fprintf(stdout, "Frame : %d, Face[%d]: rect[%d,%d,%d,%d]\n", frame++, i, FaceRes->rcFace[i].left, FaceRes->rcFace[i].top, FaceRes->rcFace[i].right, FaceRes->rcFace[i].bottom);
 				}
 			}
+			Sleep(100);
+		}
+		else {
+			Sleep(500);
 		}
 	}
 }

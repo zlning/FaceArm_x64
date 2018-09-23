@@ -17,8 +17,8 @@ int FaceArmControl::getPreviewData(FaceArmControlSurfaceBuffer **surface) {
 	}
 	mSurface = (FaceArmControlSurfaceBuffer*)malloc(sizeof(FaceArmControlSurfaceBuffer));
 	mSurface->buffer = (unsigned char *)malloc(mInput->getBufferSize());
-	*surface = mSurface;
 	mInput->getBuffer(mSurface);
+	*surface = mSurface;
 	return 0;
 }
 int FaceArmControl::showSource() {
@@ -38,8 +38,10 @@ int FaceArmControl::TrackingFace() {
 int main() {
 	FaceArmControl control;
 	control.showSource();
-	//control.TrackingFace();
-	while (1);
+	control.TrackingFace();
+	while (1) {
+		Sleep(1000);
+	}
 	return 0;
 }
 #endif

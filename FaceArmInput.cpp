@@ -4,6 +4,12 @@ using namespace std;
 
 FaceArmInput::FaceArmInput() {
 	mCap = new cv::VideoCapture(0);
+	//mCap = new cv::VideoCapture("E:\\TDDOWNLOAD\\13948491-1-hd.mp4");
+
+	/*mCap->set(CV_CAP_PROP_FRAME_WIDTH, 1080);
+	mCap->set(cv::CV_CAP_PROP_FRAME_HEIGHT, 960);
+	mCap->set(cv::CV_CAP_PROP_FPS, 30);*/
+
 	isShow = false;
 	mRectangle.isShow = false;
 	mRectangle.left = 0;
@@ -26,18 +32,29 @@ int FaceArmInput::getBufferSize() {
 		return -1;
 	}
 	//*mCap >> frame;
-	return frame.total();
+	return frame.total()*3;
 }
 void FaceArmInput::getBuffer(FaceArmControlSurfaceBuffer *surface) {
+	using namespace cv;
 	if (mCap==NULL) {
 		fprintf(stderr, "mCap is not init\n");
 		return;
 	}
-	//*mCap >> frame;
-	surface->width = frame.rows;
-	surface->height = frame.cols;
-	surface->buffersize = frame.total();
-	memcpy(surface->buffer, frame.data, frame.total());
+	surface->width = frame.cols;
+	surface->height = frame.rows;
+	surface->buffersize = frame.total()*3;
+	memcpy(surface->buffer, frame.data, frame.total()*3);
+	/*
+	for (int i = 0; i < frame.rows; ++i)
+	{
+		for (int j = 0; j < frame.cols; ++j)
+		{
+			cv::Vec3b p;
+			surface->buffer[i * frame.cols * 3 + j * 3] = frame.at<cv::Vec3b>(i, j)[0];
+			surface->buffer[i * frame.cols * 3 + j * 3 + 1] = frame.at<cv::Vec3b>(i, j)[1];
+			surface->buffer[i * frame.cols * 3 + j * 3 + 2] = frame.at<cv::Vec3b>(i, j)[2];
+		}
+	}*/
 }
 void FaceArmInput::showCameraVedio() {
 	/*using namespace cv;
@@ -64,6 +81,20 @@ void  FaceArmInput::InputThread() {
 				rectangle(frame, Rect(mRectangle.left, mRectangle.top, mRectangle.right - mRectangle.left, mRectangle.bottom - mRectangle.top)
 					, Scalar(0, 0, 255), 1, 1, 0);
 			}
+#if 0
+			for (int i = 0; i < frame.rows; ++i)
+			{
+				for (int j = 0; j < frame.cols; ++j)
+				{
+					Vec3b p;
+					p[0] = rand() % 255;
+					p[1] = rand() % 255;
+					p[2] = rand() % 255;
+				//	frame.at<Vec3b>(i, j) = p;
+					frame.at<Vec3b>(i, j)[0]= rand() % 255;
+				}
+			}
+#endif
 			imshow("µ±«∞ ”∆µ", frame);
 			waitKey(30);
 		}
