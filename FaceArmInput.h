@@ -14,12 +14,12 @@ public:
 	void getBuffer(FaceArmControlSurfaceBuffer *surface);
 	void showCameraVedio();
 	int getBufferSize();
-	void setRectangle(FaceArmControlRectangle rectangle);
+	void setRectangle(FaceArmControlRectangle rectangle[]);
 	std::thread *mInputThread;
 private:
 	void InputThread();
 	bool isShow;
 	cv::Mat frame;
-	FaceArmControlRectangle mRectangle;
+	FaceArmControlRectangle mRectangle[4] = {0};
 	cv::VideoCapture *mCap;
 };

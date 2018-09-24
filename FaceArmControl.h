@@ -11,7 +11,7 @@ public:
 	int getPreviewData(FaceArmControlSurfaceBuffer **surface);
 	int showSource();
 	int TrackingFace();
-	void setRectangle(FaceArmControlRectangle rectangle);
+	void setRectangle(FaceArmControlRectangle rectangle[]);
 private:
 	FaceArmInput *mInput;
 	FaceArmTracking *mTraking;

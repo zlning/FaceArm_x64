@@ -1,4 +1,5 @@
 #pragma once
+#define FaceArm_FACENUM 4
 struct FaceArmControlRectangle {
 	int left;
 	int top;

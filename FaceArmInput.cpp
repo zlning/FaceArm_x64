@@ -3,19 +3,14 @@
 using namespace std;
 
 FaceArmInput::FaceArmInput() {
-	mCap = new cv::VideoCapture(0);
-	//mCap = new cv::VideoCapture("E:\\TDDOWNLOAD\\13948491-1-hd.mp4");
+	//mCap = new cv::VideoCapture(0);
+	mCap = new cv::VideoCapture("E:\\TDDOWNLOAD\\falldown.mp4");
 
 	/*mCap->set(CV_CAP_PROP_FRAME_WIDTH, 1080);
 	mCap->set(cv::CV_CAP_PROP_FRAME_HEIGHT, 960);
 	mCap->set(cv::CV_CAP_PROP_FPS, 30);*/
 
 	isShow = false;
-	mRectangle.isShow = false;
-	mRectangle.left = 0;
-	mRectangle.right = 0;
-	mRectangle.bottom = 0;
-	mRectangle.top = 0;
 	if (!mCap->isOpened())
 	{
 		fprintf(stderr, "camera can not init\n");
@@ -69,17 +64,21 @@ void FaceArmInput::showCameraVedio() {
 	}*/
 	isShow = true;
 }
-void FaceArmInput::setRectangle(FaceArmControlRectangle rectangle) {
-	mRectangle = rectangle;
+void FaceArmInput::setRectangle(FaceArmControlRectangle rectangle[]) {
+	for (int i = 0; i<FaceArm_FACENUM; i++) {
+		mRectangle[i] = rectangle[i];
+	}
 }
 void  FaceArmInput::InputThread() {
 	using namespace cv;
 	while (true) {
 		*mCap >> frame;
 		if (isShow) {
-			if (mRectangle.isShow) {
-				rectangle(frame, Rect(mRectangle.left, mRectangle.top, mRectangle.right - mRectangle.left, mRectangle.bottom - mRectangle.top)
-					, Scalar(0, 0, 255), 1, 1, 0);
+			for (int i = 0; i < FaceArm_FACENUM; i++) {
+				if (mRectangle[i].isShow) {
+					rectangle(frame, Rect(mRectangle[i].left, mRectangle[i].top, mRectangle[i].right - mRectangle[i].left, mRectangle[i].bottom - mRectangle[i].top)
+						, Scalar(0, 0, 255), 1, 1, 0);
+				}
 			}
 #if 0
 			for (int i = 0; i < frame.rows; ++i)

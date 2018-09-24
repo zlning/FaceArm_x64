@@ -83,21 +83,23 @@ void FaceArmTracking::TrackingThread() {
 			{
 				fprintf(stdout, "The number of face: %d\n", FaceRes->nFace);
 				if (FaceRes->nFace == 0) {
-					FaceArmControlRectangle tmp = { 0,0,0, 0,true };
+					FaceArmControlRectangle tmp[FaceArm_FACENUM] = {0};
 					mFaceArmControl->setRectangle(tmp);
 				}
-				for (int i = 0; i < FaceRes->nFace; i++)
-				{
-					if (i == 0) {
-						FaceArmControlRectangle tmp = { 10,10,100, 100,true };
-						tmp.left = FaceRes->rcFace[i].left;
-						tmp.right = FaceRes->rcFace[i].right;
-						tmp.top = FaceRes->rcFace[i].top;
-						tmp.bottom = FaceRes->rcFace[i].bottom;
-						tmp.isShow = true;
-						mFaceArmControl->setRectangle(tmp);
+				else {
+					FaceArmControlRectangle tmp[FaceArm_FACENUM] = { 0 };
+					for (int i = 0; i < FaceRes->nFace; i++)
+					{
+							
+						tmp[i].left = FaceRes->rcFace[i].left;
+						tmp[i].right = FaceRes->rcFace[i].right;
+						tmp[i].top = FaceRes->rcFace[i].top;
+						tmp[i].bottom = FaceRes->rcFace[i].bottom;
+						tmp[i].isShow = true;
+						//mFaceArmControl->setRectangle(tmp);
+						fprintf(stdout, "Frame : %d, Face[%d]: rect[%d,%d,%d,%d]\n", frame++, i, FaceRes->rcFace[i].left, FaceRes->rcFace[i].top, FaceRes->rcFace[i].right, FaceRes->rcFace[i].bottom);
 					}
-					fprintf(stdout, "Frame : %d, Face[%d]: rect[%d,%d,%d,%d]\n", frame++, i, FaceRes->rcFace[i].left, FaceRes->rcFace[i].top, FaceRes->rcFace[i].right, FaceRes->rcFace[i].bottom);
+					mFaceArmControl->setRectangle(tmp);
 				}
 			}
 			Sleep(100);

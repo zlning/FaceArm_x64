@@ -28,7 +28,7 @@ int FaceArmControl::showSource() {
 	}
 	mInput->showCameraVedio();
 }
-void FaceArmControl::setRectangle(FaceArmControlRectangle rectangle) {
+void FaceArmControl::setRectangle(FaceArmControlRectangle rectangle[]) {
 	mInput->setRectangle(rectangle);
 }
 int FaceArmControl::TrackingFace() {
